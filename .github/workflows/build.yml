@@ -1,0 +1,29 @@
+---
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: |
+        IMAGE_TAG="latest" # Default tag
+        if [ -n "${{ github.sha }}" ]; then
+          IMAGE_TAG="${{ github.sha }}"
+        fi
+        docker build -t vrushali28/webapp-k8s:${IMAGE_TAG} .
+    
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+    - name: Push Docker image to Docker Hub
+      run: docker push vrushali28/webapp-k8s:${IMAGE_TAG}
