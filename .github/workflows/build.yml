@@ -16,6 +16,7 @@ jobs:
 
     - name: Build Docker image
       run: |
+        cd webapp
         IMAGE_TAG="latest" # Default tag
         if [ -n "${{ github.sha }}" ]; then
           IMAGE_TAG="${{ github.sha }}"
