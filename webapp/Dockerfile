@@ -12,6 +12,6 @@ RUN ls
 
 COPY . ./
 
-EXPOSE 3000
+EXPOSE 3002
 
-CMD ["npm", "start"]
+CMD ["node", "app.js"]
